@@ -33,8 +33,11 @@ object WordCount {
   /**
    * 使用textFile提交
    * textFile的参数是一个path,这个path可以是：
-   * 一个文件路径，这时候只装载指定的文件
-   * 一个目录路径，但是该目录下不能有子目录，而且有多少个输入源就有多少个输出文件
+   * 1)一个文件路径，这时候只装载指定的文件
+   * 2)一个目录路径，但是该目录下不能有子目录，而且有多少个输入源就有多少个输出文件，但却是对所有文件统计
+   * 3)也可以接受commaSeparatedPaths，即逗号分割的路径字符串，
+   * 如："/home/zhuang/spark/README.md,/home/zhuang/spark/NOTICE"
+   * 也是对所有文件统计，输出文件数量跟输入数量相同
    * @param file
    */
   def firstSubmit(file : String) = {
