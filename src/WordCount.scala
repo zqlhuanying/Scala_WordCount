@@ -24,10 +24,11 @@ object WordCount {
   def main(args: Array[String]) {
     val filePath = if(args.length > 0) args(0) else "/home/zhuang/spark/bin"
     val files = FileUtils.listAllFiles(new File(filePath))
-
+    //println(FileUtils.list2String(files))
     //firstSubmit(filePath)
     //secondSubmit(files)
-    thirdSubmit(filePath)
+    //thirdSubmit(filePath)
+    thirdSubmit(FileUtils.list2String(files))
   }
 
   /**
@@ -133,6 +134,19 @@ object FileUtils {
   }
 
   /**
+   * 将List[File]转化成commaSeparatedPaths，
+   * 即"/home/zhuang/spark/README.md,/home/zhuang/spark/NOTICE"
+   * @param lists
+   * @return
+   */
+  def list2String(lists: List[File]): String = {
+    val str = new StringBuffer()
+    for (list <- lists){
+      str.append(list.getPath + ",")
+    }
+    str.delete(str.length - 1, str.length).toString
+  }
+  /**
    * 递归遍历
    * @param file 只能是文件夹
    * @param lists
@@ -140,7 +154,9 @@ object FileUtils {
    */
   private def listAllFiles(file: File, lists: ListBuffer[File]): List[File] = {
     for (child <- file.listFiles()) {
-      if (child.isFile && !child.getName.endsWith(".zip")) lists.append(child)
+      if (child.isFile &&
+          !child.getName.endsWith(".zip") &&
+          !child.getName.startsWith("_")) lists.append(child)
       else if (child.isDirectory) listAllFiles(child, lists)
     }
     lists.toList
